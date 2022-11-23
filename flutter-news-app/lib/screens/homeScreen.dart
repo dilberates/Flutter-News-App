@@ -27,8 +27,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        actions: [
-        ],
+        title: Center(child: Text("NEWS APP")),
       ),
       body: MotionTabBarView(
         controller: _controller,
