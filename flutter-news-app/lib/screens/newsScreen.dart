@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/view-model/articleViewModel.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _NewsScreenState extends State<NewsScreen> {
                 
               },
               controller: _editingController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: "Search",
                 hintText: "Search",
                 prefixIcon: Icon(Icons.search),
