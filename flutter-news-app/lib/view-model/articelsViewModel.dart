@@ -6,7 +6,7 @@ import '../repository/abstractClassRepository.dart';
 class ArticlesListView{
   ClassRepository? classRepository;
 
-  ArticlesListView(this.classRepository);
+  ArticlesListView( this.classRepository);
   Future<List<ArticleViewModel>> getAllNews() async{
 
     List<ArticleModel> list=await classRepository!.getAllNews();
