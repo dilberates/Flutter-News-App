@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/repository/newsApi.dart';
+import 'package:flutter_news_app/screens/detailPage.dart';
 import 'package:flutter_news_app/view-model/articelsViewModel.dart';
 import 'package:flutter_news_app/view-model/articleViewModel.dart';
 import 'package:getwidget/components/card/gf_card.dart';
@@ -14,58 +15,59 @@ class NewsScreen extends StatefulWidget {
   State<NewsScreen> createState() => _NewsScreenState();
 }
 
-
 class _NewsScreenState extends State<NewsScreen> {
-  ArticlesListView articlesListView=ArticlesListView(NewsApi());
-  TextEditingController _editingController=TextEditingController();
+  ArticlesListView articlesListView = ArticlesListView(NewsApi());
+  TextEditingController _editingController = TextEditingController();
 
   @override
   void didUpdateWidget(covariant NewsScreen oldWidget) {
     // TODO: implement didUpdateWidget
-    BuilderWidget(edit: _editingController.text,articlesListView: articlesListView,);
+    BuilderWidget(
+      edit: _editingController.text,
+      articlesListView: articlesListView,
+    );
     super.didUpdateWidget(oldWidget);
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
-              onChanged: (value){
-
-                  setState(() {
-                    _editingController.text=value;
-                    _editingController.selection=TextSelection.fromPosition(TextPosition(offset: _editingController.text.length));
-                  });
-
+              onChanged: (value) {
+                setState(() {
+                  _editingController.text = value;
+                  _editingController.selection = TextSelection.fromPosition(
+                      TextPosition(offset: _editingController.text.length));
+                });
               },
               controller: _editingController,
               decoration: const InputDecoration(
-                labelText: "Search",
-                hintText: "Search",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25.0)
-                  )
-                )
-              ),
+                  labelText: "Search",
+                  hintText: "Search",
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25.0)))),
             ),
           ),
-          BuilderWidget(edit:_editingController.text,articlesListView:articlesListView)
+          BuilderWidget(
+              edit: _editingController.text, articlesListView: articlesListView)
         ],
       ),
     );
   }
 }
-class BuilderWidget extends StatefulWidget {
 
+class BuilderWidget extends StatefulWidget {
   final String edit;
   final ArticlesListView articlesListView;
-   BuilderWidget({Key? key, required,required this.edit,required this.articlesListView }) : super(key: key);
+
+  BuilderWidget(
+      {Key? key, required, required this.edit, required this.articlesListView})
+      : super(key: key);
 
   @override
   State<BuilderWidget> createState() => _BuilderWidgetState();
@@ -87,12 +89,27 @@ class _BuilderWidgetState extends State<BuilderWidget> {
               child: ListView.builder(
                 itemCount: news == null ? 0 : news!.length,
                 itemBuilder: (BuildContext context, int index) {
-                  String publishAt=news[index]!.publishedAt;
-                  final splitted = publishAt.split('T');
+                  String publishAt = news[index]!.publishedAt;
+                  String content=news[index]!.content;
+                  final contentS=content.split('[');
+                  final date = publishAt.split('T');
                   return InkWell(
                       onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DetailPage(
+                                  urlImage:news[index]!.urlToImage,
+                                  title:news[index]!.title,
+                                  description:news[index]!.description,
+                                  date:date[0],
+                                  source:news[index]!.sourceName,
+                                  url:news[index]!.url,
+                                  content:contentS[0],
+                                  author: news[index]!.author,
+                                )));
                       },
-                      child:Card(
+                      child: Card(
                         child: ListTile(
                           trailing: Image.network(
                             news[index]!.urlToImage,
@@ -110,20 +127,20 @@ class _BuilderWidgetState extends State<BuilderWidget> {
                                 style: Theme.of(context).textTheme.labelMedium,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Text("Source Name: "+
-                                news[index]!.sourceName,
+                              Text(
+                                "Source Name: " + news[index]!.sourceName,
                                 style: Theme.of(context).textTheme.labelMedium,
                                 overflow: TextOverflow.ellipsis,
                               ),
-                              Text("Date: "+
-                                splitted[0],
+                              Text(
+                                "Date: " + date[0],
                                 style: Theme.of(context).textTheme.labelMedium,
                                 overflow: TextOverflow.ellipsis,
                               )
                             ],
                           ),
                         ),
-                      ) );
+                      ));
                 },
               ),
             );

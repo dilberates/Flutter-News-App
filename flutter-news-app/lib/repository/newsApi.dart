@@ -11,7 +11,7 @@ class NewsApi extends ClassRepository{
   Future<List<ArticleModel>> getAllNews() async {
     try {
       var url =
-      ("https://newsapi.org/v2/top-headlines?country=us&apiKey=$keyApi");
+      ("https://newsapi.org/v2/top-headlines?country=tr&apiKey=$keyApi");
       http.Response response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
