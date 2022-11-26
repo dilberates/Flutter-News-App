@@ -2,52 +2,53 @@ import 'dart:convert';
 
 import 'package:flutter_news_app/model/articleModel.dart';
 import 'package:flutter_news_app/model/newsModel.dart';
+import 'package:flutter_news_app/repository/abstractClassRepository.dart';
 import 'package:http/http.dart' as http;
-class NewsApi {
-  var keyApi = "417b0ec52c4c4bc99359641548942599";
+class NewsApi extends ClassRepository{
+  var keyApi = "51c6381d14d840a1b3f45051c299c74a";
 
-  Future<List<NewsModel>> getAllNews() async {
+@override
+  Future<List<ArticleModel>> getAllNews() async {
+    try {
       var url =
       ("https://newsapi.org/v2/top-headlines?country=us&apiKey=$keyApi");
       http.Response response = await http.get(Uri.parse(url));
-      var jsondata = jsonDecode(response.body);
-      List<NewsModel> articleListModel=[];
       if (response.statusCode == 200) {
-        for(var data in jsondata['articles']){
-          if(data['urlToImage'] != null){
-            NewsModel newsModel=NewsModel.fromMap(data);
-            articleListModel.add(newsModel);
-          }
-        }
+        var jsondata = jsonDecode(response.body);
+        NewsModel newsModel=NewsModel.fromMap(jsondata);
+        List<ArticleModel> articleListModel = newsModel.articles!.map((e) => ArticleModel.fromMap(e)).toList();
         return articleListModel;
       } else {
-        return articleListModel;
         print("Status code: ${response.statusCode}");
       }
-
+    }catch(e){
+      print(e);
+    }
+    throw Exception("Error.");
   }
-
-  Future<List<NewsModel>> searchNews({required String query}) async {
-    String url = '';
+@override
+  Future<List<ArticleModel>> searchNews(String query) async {
+  try{
+    var url = '';
     if (query.isEmpty) {
       url = 'https://newsapi.org/v2/everything?q=biden&page=1&apiKey=$keyApi';
     } else {
       url = 'https://newsapi.org/v2/everything?q=${query}&apiKey=$keyApi';
     }
     var response = await http.get(Uri.parse(url));
-    var jsonData = jsonDecode(response.body);
-    List<NewsModel> articleModeList = [];
+    List<ArticleModel> articleModeList = [];
     if (response.statusCode == 200) {
-      for (var data in jsonData['articles']) {
-        if (data['urlToImage'] != null) {
-          NewsModel newsModel = NewsModel.fromMap(data);
-          articleModeList.add(newsModel);
-        }
-      }
-      return articleModeList;
+      var jsonData = jsonDecode(response.body);
+          NewsModel newsModel = NewsModel.fromMap(jsonData);
+      List<ArticleModel> articleListModel = newsModel.articles!.map((e) => ArticleModel.fromMap(e)).toList();
+      return articleListModel;
     } else {
-      return articleModeList;
+      print("Status code: ${response.statusCode}");
     }
+  }catch(e){
+    print(e);
+  }
+  throw Exception("Error.");
   }
 }
 
