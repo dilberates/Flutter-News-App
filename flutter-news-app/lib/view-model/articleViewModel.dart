@@ -12,5 +12,5 @@ class ArticleViewModel{
   get description => articleModel?.description;
   get content => articleModel?.content;
   get urlToImage => articleModel?.urlToImage;
-  get url => articleModel?.urlToImage;
+  get url => articleModel?.url;
 }
