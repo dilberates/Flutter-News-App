@@ -5,8 +5,6 @@ import 'package:flutter_news_app/repository/newsApi.dart';
 import 'package:flutter_news_app/screens/detailPage.dart';
 import 'package:flutter_news_app/view-model/articelsViewModel.dart';
 import 'package:flutter_news_app/view-model/articleViewModel.dart';
-import 'package:getwidget/components/card/gf_card.dart';
-import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);
