@@ -5,7 +5,7 @@ import 'package:flutter_news_app/model/newsModel.dart';
 import 'package:flutter_news_app/repository/abstractClassRepository.dart';
 import 'package:http/http.dart' as http;
 class NewsApi extends ClassRepository{
-  var keyApi = "51c6381d14d840a1b3f45051c299c74a";
+  var keyApi = "65e7cffb1deb4c3c84a25c54c4e41f49";
 
 @override
   Future<List<ArticleModel>> getAllNews() async {
@@ -51,4 +51,3 @@ class NewsApi extends ClassRepository{
   throw Exception("Error.");
   }
 }
-
