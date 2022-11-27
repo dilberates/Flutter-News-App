@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/model/articleModel.dart';
 import 'package:flutter_news_app/screens/webViewScreen.dart';
-import 'package:flutter_news_app/view-model/favoriteViewModel.dart';
 import 'package:flutter_share/flutter_share.dart';
+
 
 class DetailPage extends StatefulWidget {
   final String? urlImage,
@@ -36,7 +36,6 @@ class DetailPage extends StatefulWidget {
         chooserTitle: 'News Share');
   }
 }
-FavoriteViewModel _favoriteViewModel=FavoriteViewModel();
 bool isFavorite=false;
 class _DetailPageState extends State<DetailPage> {
 
@@ -122,7 +121,6 @@ class _DetailPageState extends State<DetailPage> {
                               setState(() {
                                 setState(() {
                                   isFavorite = !isFavorite;
-                                  _favoriteViewModel.addToFavorites(widget.!);
                                 });
                               });
                             },

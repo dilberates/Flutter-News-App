@@ -1,6 +1,6 @@
-import 'dart:convert';
 
 import 'package:flutter_news_app/model/sourceModel.dart';
+
 
 class ArticleModel {
 
@@ -23,20 +23,5 @@ class ArticleModel {
         content: map['content'] != null ? map['content'] as String: "publishedAt value null",
 
     );
-  } static Map<String, dynamic> toMap(ArticleModel articleModel) => {
-    'title': articleModel.title,
-    'description': articleModel.description,
-    'publishedAt': articleModel.publishedAt,
-    'urlToImage': articleModel.urlToImage,
-    'url': articleModel.url,
-    'content':articleModel.content,
-    'author':articleModel.author,
-    'source':articleModel.sourceModel,
-  };
-
-  static String encode(List<ArticleModel> article) => json.encode(
-    article.map<Map<String, dynamic>>((news2) => ArticleModel.toMap(news2)).toList(),
-  );
-  static List<ArticleModel> decode(String news) =>
-      (json.decode(news) as List<dynamic>).map<ArticleModel>((item) => ArticleModel.fromMap(item)).toList();
+  }
 }
