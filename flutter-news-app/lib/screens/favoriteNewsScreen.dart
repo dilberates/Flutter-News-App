@@ -1,12 +1,17 @@
-import 'package:flutter/material.dart';
 
-class FavoriteNewsScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+class FavoriteNewsScreen extends StatefulWidget {
   const FavoriteNewsScreen({Key? key}) : super(key: key);
 
   @override
+  State<FavoriteNewsScreen> createState() => _FavoriteNewsScreenState();
+}
+class _FavoriteNewsScreenState extends State<FavoriteNewsScreen> {
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text("FavoriteNewsScreen")),
-    );
+    return Scaffold();
   }
 }
+
+

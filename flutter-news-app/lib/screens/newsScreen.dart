@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/model/articleModel.dart';
 import 'package:flutter_news_app/repository/newsApi.dart';
 import 'package:flutter_news_app/screens/detailPage.dart';
-import 'package:flutter_news_app/view-model/articelsViewModel.dart';
-import 'package:flutter_news_app/view-model/articleViewModel.dart';
+
+import '../view-model/articleViewModel.dart';
+import '../view-model/articlesListView.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({Key? key}) : super(key: key);
@@ -74,6 +76,7 @@ class BuilderWidget extends StatefulWidget {
 class _BuilderWidgetState extends State<BuilderWidget> {
   @override
   Widget build(BuildContext context) {
+    ArticleModel articleModel;
     return FutureBuilder<List<ArticleViewModel>>(
         future: widget.edit == null
             ? widget.articlesListView.getAllNews()

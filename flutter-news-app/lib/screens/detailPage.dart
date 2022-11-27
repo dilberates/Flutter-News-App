@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_news_app/model/articleModel.dart';
 import 'package:flutter_news_app/screens/webViewScreen.dart';
 import 'package:flutter_share/flutter_share.dart';
+
 
 class DetailPage extends StatefulWidget {
   final String? urlImage,
@@ -11,8 +13,7 @@ class DetailPage extends StatefulWidget {
       url,
       content,
       author;
-
-  const DetailPage(
+  DetailPage(
       {Key? key,
       this.urlImage,
       this.title,
@@ -21,12 +22,12 @@ class DetailPage extends StatefulWidget {
       this.date,
       this.url,
       this.content,
-      this.author})
+      this.author,})
       : super(key: key);
 
   @override
   State<DetailPage> createState() => _DetailPageState();
-
+  final ArticleModel? articleModel=ArticleModel();
   Future<void> share() async {
     await FlutterShare.share(
         title: title!,
@@ -35,8 +36,14 @@ class DetailPage extends StatefulWidget {
         chooserTitle: 'News Share');
   }
 }
-
+bool isFavorite=false;
 class _DetailPageState extends State<DetailPage> {
+
+  @override
+  void initState() {
+    isFavorite=false;
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,9 +118,14 @@ class _DetailPageState extends State<DetailPage> {
                               )),
                           IconButton(
                             onPressed: () {
-                              setState(() {});
+                              setState(() {
+                                setState(() {
+                                  isFavorite = !isFavorite;
+                                });
+                              });
                             },
-                            icon: Icon(Icons.favorite),
+                            icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
+                            color: Colors.red,
                           ),
                         ],
                       ),
@@ -123,7 +135,10 @@ class _DetailPageState extends State<DetailPage> {
                         height: 60,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WebViewScreen(url: widget.url,)));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => WebViewScreen(
+                                      url: widget.url,
+                                    )));
                           },
                           style: ElevatedButton.styleFrom(
                             shape: new RoundedRectangleBorder(
@@ -148,3 +163,5 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 }
+
+
