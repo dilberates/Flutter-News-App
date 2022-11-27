@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_news_app/view/searchPage.dart';
 import 'package:flutter_news_app/viewModel/newsViewModel.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import '../widget/customCardWidget.dart';
 import '../widget/searcWidget.dart';
@@ -15,6 +16,9 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> {
+
+  final PagingController<int,dynamic> _pagingController=PagingController(firstPageKey: 0);
+
   TextEditingController _editingController = TextEditingController();
   NewsViewModel _newsViewModel=NewsViewModel();
   bool loading=true;
@@ -30,6 +34,8 @@ class _NewsScreenState extends State<NewsScreen> {
 
   @override
   void initState() {
+
+    _pagingController.
     super.initState();
     getNewsData();
   }
