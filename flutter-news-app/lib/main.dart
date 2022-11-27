@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news_app/screens/homeScreen.dart';
+import 'package:flutter_news_app/view/homeScreen.dart';
 
 void main() {
   runApp(const MyApp());

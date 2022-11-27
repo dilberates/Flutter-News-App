@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_news_app/screens/favoriteNewsScreen.dart';
-import 'package:flutter_news_app/screens/newsScreen.dart';
+import 'package:flutter_news_app/view/favoriteNewsScreen.dart';
+import 'package:flutter_news_app/view/newsScreen.dart';
 import 'package:motion_tab_bar/MotionTabBarView.dart';
 import 'package:motion_tab_bar/MotionTabController.dart';
 import 'package:motion_tab_bar/motiontabbar.dart';
@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  final _screens = [NewsScreen(), FavoriteNewsScreen()];
+  final _screens = [NewsScreen(), FavoriteNewsPage()];
   late MotionTabController _controller;
 
   @override
