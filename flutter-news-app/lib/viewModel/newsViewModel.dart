@@ -16,16 +16,15 @@ class NewsViewModel {
   ValueNotifier<PageStatus> pageStatus = ValueNotifier<PageStatus>(
       PageStatus.idle);
 
+  //pagination durumlarını yazdığımız bu kontrollerle sağlamaktayız.
+
   Future getInitialNewsSearch(String keyword) async {
    pageStatus.value=PageStatus.firstPageLoading;
-   print("girdi");
    try{
    await getNews(keyword, 1);
    if(news.isEmpty){
-     print("bos");
      pageStatus.value=PageStatus.firstPageNoItemsFound;
    }else{
-     print("bos değil ");
      pageStatus.value=PageStatus.firstPageLoaded;
    }
    }catch(e){
@@ -34,14 +33,11 @@ class NewsViewModel {
   }
   Future getInitialNews() async {
     pageStatus.value=PageStatus.firstPageLoading;
-    print("girdi");
     try{
       await getNewsGeneral(1);
       if(news.isEmpty){
-        print("bos");
         pageStatus.value=PageStatus.firstPageNoItemsFound;
       }else{
-        print("bos değil ");
         pageStatus.value=PageStatus.firstPageLoaded;
       }
     }catch(e){
@@ -65,6 +61,7 @@ class NewsViewModel {
       pageStatus.value=PageStatus.newPageError;
     }
   }
+
   Future loadMoreNews() async {
     pageStatus.value=PageStatus.newPageLoading;
     pageKey++;
