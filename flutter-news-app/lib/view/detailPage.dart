@@ -96,7 +96,7 @@ class _DetailPageState extends State<DetailPage> {
                           ),
                           Chip(
                             label: Text(
-                              widget.newsModel.publishedAt!.split('T').first!,
+                              widget.newsModel.publishedAt!.split('T').first,
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
