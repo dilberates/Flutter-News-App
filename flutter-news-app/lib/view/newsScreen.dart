@@ -14,19 +14,15 @@ class NewsScreen extends StatefulWidget {
   State<NewsScreen> createState() => _NewsScreenState();
 }
 NewsViewModel _newsViewModel = NewsViewModel();
+ScrollController? scrollController;
 class _NewsScreenState extends State<NewsScreen> {
   TextEditingController _editingController = TextEditingController();
 
-  bool loading = true;
-
-  void getNewsData() async {
-    //kullanıcıyı ilk karşılayan feeds sayfasında, genel haber akışına yer veriyoruz. Bu sayfada kullanıcı anahtar kelimeye göre arama yapabiliyor.
-  }
-
   @override
   void initState() {
-    super.initState();
+    createScrollController();
     _newsViewModel.getInitialNews();
+    super.initState();
   }
 
   @override
@@ -72,7 +68,11 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
     );
   }
-
+@override
+  void dispose() {
+    scrollController?.dispose();
+    super.dispose();
+  }
   void searchButtonClicked() {
     if (_editingController.text.isNotEmpty) {
       Navigator.push(
@@ -86,6 +86,19 @@ class _NewsScreenState extends State<NewsScreen> {
       );
     }
   }
+}
+
+void createScrollController() async{
+scrollController=ScrollController();
+scrollController?.addListener(loadMoreNews);
+}
+
+ Future<void> loadMoreNews() async {
+  if(scrollController!.position.pixels>scrollController!.position.maxScrollExtent
+  && _newsViewModel.pageStatus.value != PageStatus.newPageLoading){
+    _newsViewModel.loadMoreNews();
+  }
+
 }
 
 Widget idleWidget() => const SizedBox();
@@ -116,6 +129,7 @@ class _listViewBuilderState extends State<listViewBuilder> {
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
+        controller:scrollController ,
         scrollDirection: Axis.vertical,
         itemCount: widget.news.length,
         itemBuilder: ((context, index) {
@@ -137,7 +151,7 @@ Widget newPageLoadingWidget() {
       listViewBuilder(news:_newsViewModel.news ),
       Padding(padding:EdgeInsets.all(18.0),
       child: LinearProgressIndicator(
-        color:Colors.white
+        color:Colors.black
       ),
       )
     ],
@@ -149,7 +163,6 @@ Widget newPageErrorWidget() {
     children: [
       Expanded(
       child:listViewBuilder(news: _newsViewModel.news),
-
   ),
 
     ],
@@ -160,3 +173,4 @@ Widget newPageErrorWidget() {
 Widget newPageNoItemsFoundWidget() {
   return const Center(child: Text("İçerik Bulunamadı."),);
 }
+
