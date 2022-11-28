@@ -5,31 +5,35 @@ import 'package:flutter_news_app/viewModel/favoriteViewModel.dart';
 import 'package:flutter_share/flutter_share.dart';
 
 class DetailPage extends StatefulWidget {
- final NewsModel newsModel;
-  DetailPage(
-      {Key? key,required this.newsModel,})
-      : super(key: key);
+  final NewsModel newsModel;
+
+  DetailPage({
+    Key? key,
+    required this.newsModel,
+  }) : super(key: key);
 
   @override
   State<DetailPage> createState() => _DetailPageState();
 
- Future<void> share() async {
-   await FlutterShare.share(
-       title: newsModel.title!,
-       text: newsModel.description!,
-       linkUrl:newsModel.url!,
-       chooserTitle: 'News Share');
- }
+  Future<void> share() async {
+    await FlutterShare.share(
+        title: newsModel.title!,
+        text: newsModel.description!,
+        linkUrl: newsModel.url!,
+        chooserTitle: 'News Share');
+  }
 }
-FavoriteNewsModel _favoriteNewsModel=FavoriteNewsModel();
-bool isFavorite=false;
-class _DetailPageState extends State<DetailPage> {
 
+FavoriteNewsModel _favoriteNewsModel = FavoriteNewsModel();
+bool isFavorite = false;
+
+class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
-    isFavorite=false;
+    isFavorite = false;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var heightSize = MediaQuery.of(context).size.height;
@@ -43,13 +47,11 @@ class _DetailPageState extends State<DetailPage> {
         ),
         actions: [
           IconButton(
-
               onPressed: () async {
                 widget.share();
               },
               icon: const Icon(Icons.share)),
           IconButton(
-
               onPressed: () {
                 setState(() {
                   isFavorite = !isFavorite;
@@ -66,86 +68,82 @@ class _DetailPageState extends State<DetailPage> {
         height: heightSize,
         child: SafeArea(
           child: SingleChildScrollView(
-            child: SizedBox(
-              height: heightSize-100,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20))),
-                      child: Image.network(
-                        widget.newsModel.urlToImage!,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      widget.newsModel.title!,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-          Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: Stack(
+              children: [
+                Image.network(
+                  widget.newsModel.urlToImage!,
+                  fit: BoxFit.cover,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.5,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0.0, 340.0, 0.0, 0.0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 3,
+                    child: Material(
+                      borderRadius: BorderRadius.circular(40.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.source,
-                              ),
-                              const SizedBox(
-                                width: 5,
-                              ),
-                              Text(widget.newsModel.source!),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20.0, 20.0, 20.0, 20.0),
+                            child: Text(
+                              widget.newsModel.title!,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
                           ),
-                          const SizedBox(
-                            width: 50,
+                          Chip(
+                            label: Text(
+                              widget.newsModel.publishedAt!.split('T').first!,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
                           ),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.date_range,
+                          Container(
+                              alignment: Alignment.bottomLeft,
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Text(
+                                widget.newsModel.description!,
+                                style: Theme.of(context).textTheme.bodyText1,
+                              )),
+                          Container(
+                              alignment: Alignment.bottomLeft,
+                              padding:
+                                  const EdgeInsets.only(left: 20, right: 20),
+                              child: Chip(
+                                label: Text(
+                                  widget.newsModel.source!,
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                ),
+                              )),
+                          Container(
+                            margin: EdgeInsets.all(30),
+                            width: 200,
+                            height: 60,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>WebViewScreen(url: widget.newsModel.url,)));
+                              },
+                              style: ElevatedButton.styleFrom(
+                                shape: new RoundedRectangleBorder(
+                                  borderRadius: new BorderRadius.circular(30.0),
+                                ),
                               ),
-                              const SizedBox(
-                                width: 5,
+                              child: Text(
+                                'Go To News Source',
+                                style: Theme.of(context).textTheme.headline6,
+                                textAlign: TextAlign.center,
                               ),
-                              Text(widget.newsModel.publishedAt!.split('T').first)
-                            ],
-                          ),
+                            ),
+                          )
                         ],
                       ),
-                    const SizedBox(
-                      height: 10,
                     ),
-                    Text(
-                      widget.newsModel.description!,
-                    ),
-                    const Expanded(child: SizedBox(height: 40)),
-                    ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => (WebViewScreen(
-                                  url: widget.newsModel.url,
-                                ))),
-                          );
-                        },
-                        style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(const Size(200, 40)),
-                          backgroundColor: MaterialStateProperty.all(Colors.grey),
-                        ),
-                        child: Text(
-                          "News Source",
-                          style: TextStyle(color:Colors.white, fontSize: 18),
-                        )),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
@@ -153,5 +151,3 @@ class _DetailPageState extends State<DetailPage> {
     );
   }
 }
-
-

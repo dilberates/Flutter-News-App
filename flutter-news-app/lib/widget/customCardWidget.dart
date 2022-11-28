@@ -50,13 +50,10 @@ class _CustomCardWidgetState extends State<CustomCardWidget> {
           child: ListTile(
             trailing: Padding(
               padding: const EdgeInsets.all(6.0),
-              child: SizedBox(
-                width: 80,
-                child: Image.network(
+              child: Image.network(
                   widget.newsModel.urlToImage!,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
-              ),
             ),
             title: Padding(
               padding: const EdgeInsets.only(left: 20),
