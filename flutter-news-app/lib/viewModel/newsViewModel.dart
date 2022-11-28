@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_news_app/model/newsModel.dart';
+import 'package:flutter_news_app/viewModel/pageStatus.dart';
 import 'package:http/http.dart' as http;
 
 //haberleri genel olarak control edecegimiz yapı
@@ -8,10 +10,23 @@ class NewsViewModel {
   List<NewsModel> news = [];
   final String baseUrl = 'https://newsapi.org/v2/everything?q=';
   final String apiKey = '65e7cffb1deb4c3c84a25c54c4e41f49';
+  int pageKey=1;
+  int perPage=20;
+  ValueNotifier<PageStatus> pageStatus = ValueNotifier<PageStatus>(
+      PageStatus.idle);
+
+  Future<void> getInitialNews() async {
+   pageStatus.value=PageStatus.firstPageLoading;
+   await getNewsGeneral(1);
+
+   if(news.isEmpty)
+  }
+
 
   Future<void> getNews(String keyword, int page) async {
     //Kullanıcıdan alınan keyword ve page bilgileri ile api adresi olusturuluyor.
-    var response = await http.get(Uri.parse('$baseUrl$keyword&$page&apiKey=$apiKey'));
+    var response = await http.get(
+        Uri.parse('$baseUrl$keyword&page=$page&apiKey=$apiKey'));
     var jsonData = jsonDecode(response.body);
 
     //status yerine statusCode=200 kontrolü de yapılabilir.
@@ -35,8 +50,9 @@ class NewsViewModel {
 
   //Anasayfada kullanıcı herhangi bir arama yapmadığı durumda karşısına çıkacak ekran için bu metodu kullanıyoruz.
   //US gündemidnen önce çıkan haberleri getiriyor. Farklı etiketler verilerek değiştirilebilir.
-  Future<void> getNewsGeneral() async {
-    var response = await http.get(Uri.parse('https://newsapi.org/v2/top-headlines?country=us&apiKey=$apiKey'));
+  Future<void> getNewsGeneral(int pageKey) async {
+    var response = await http.get(Uri.parse(
+        'https://newsapi.org/v2/top-headlines?country=us&$pageKey&apiKey=$apiKey'));
     var jsonData = jsonDecode(response.body);
 
     if (jsonData['status'] == 'ok') {
