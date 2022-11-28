@@ -1,4 +1,4 @@
-# Flutter-News-App^
+# Flutter-News-App
 
 - In this project, a mobile application was developed using newsApi.org api to view, search, share and like news.
 
